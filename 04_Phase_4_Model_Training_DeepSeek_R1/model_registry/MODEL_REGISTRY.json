@@ -1,0 +1,84 @@
+{
+  "registry_version": "1.0.0",
+  "default_version": "v1.0_dpo_baseline",
+  "registered_models": {
+    "v1.0_dpo_baseline": {
+      "version_id": "v1.0_dpo_baseline",
+      "version_folder": "Version_1",
+      "display_name": "FinReg-SLM 7B Stage 2 DPO (Version 1 - Production Baseline)",
+      "release_date": "2026-08-16",
+      "architecture": {
+        "base_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "parameter_count": "7.61B",
+        "context_length": 32768,
+        "alignment_type": "Two-Stage RAFT (Stage 1 SFT on CoT <think> traces + Stage 2 Native DPO on Epistemic Traps)",
+        "quantization_support": ["4-bit NF4 (bitsandbytes)", "8-bit Int8", "16-bit FP16 / BFloat16", "GGUF Q4_K_M"]
+      },
+      "storage_paths": {
+        "version_dir": "04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1",
+        "merged_model_dir": "04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/merged_fp16",
+        "adapter_dir": "04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage2_dpo_adapter",
+        "merged_fp16_abs": "c:/Users/Varun/Desktop/Main/Sem 7/Major Project/FinReg_SLM_Unified_Project_Hub/04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/merged_fp16",
+        "full_adapter_abs": "c:/Users/Varun/Desktop/Main/Sem 7/Major Project/FinReg_SLM_Unified_Project_Hub/04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage2_dpo_adapter",
+        "merged_size_gb": 15.2,
+        "adapter_size_mb": 10.1
+      },
+      "system_requirements": {
+        "min_vram_4bit_gb": 4.5,
+        "recommended_vram_gb": 8.0,
+        "tested_gpus": ["NVIDIA GeForce RTX 5060 Laptop (8GB VRAM)"],
+        "max_batch_size_8gb": 4
+      },
+      "empirical_benchmarks": {
+        "india_fin_bench_arxiv_2604_19298": {
+          "total_questions": 324,
+          "overall_macro_avg": 80.98,
+          "regulatory_interpretation": 90.29,
+          "contradiction_detection": 79.00,
+          "temporal_validity": 75.78,
+          "numerical_calculations": 69.18,
+          "standing_tier": "Top Tier 2 (Outperforms LLaMA-3-8B and Mistral-7B Base)"
+        },
+        "internal_g7_hard_suite": {
+          "total_queries": 300,
+          "overall_judge_score": 70.71,
+          "c1_factual_statutory": 92.2,
+          "c2_multihop_reasoning": 94.4,
+          "c3_cross_regulator": 96.7,
+          "c4_temporal_validity": 93.8,
+          "c5_calibrated_refusal": 82.5,
+          "c6_false_premise_rejection": 58.0,
+          "verifiable_citation_grounding": 99.17
+        }
+      }
+    },
+    "v1.0_sft_stage1": {
+      "version_id": "v1.0_sft_stage1",
+      "version_folder": "Version_1",
+      "display_name": "FinReg-SLM 7B Stage 1 SFT (Version 1 - CoT Only)",
+      "release_date": "2026-08-15",
+      "architecture": {
+        "base_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "parameter_count": "7.61B",
+        "alignment_type": "Stage 1 QLoRA SFT on 257 Golden <think> Reasoning Traces"
+      },
+      "storage_paths": {
+        "version_dir": "04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1",
+        "adapter_dir": "04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage1_sft_adapter",
+        "full_adapter_abs": "c:/Users/Varun/Desktop/Main/Sem 7/Major Project/FinReg_SLM_Unified_Project_Hub/04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage1_sft_adapter"
+      },
+      "empirical_benchmarks": {
+        "internal_g7_hard_suite": {
+          "overall_judge_score": 68.17,
+          "c1_factual_statutory": 90.0,
+          "c2_multihop_reasoning": 92.0,
+          "c3_cross_regulator": 89.5,
+          "c4_temporal_validity": 91.0,
+          "c5_calibrated_refusal": 0.0,
+          "c6_false_premise_rejection": 0.0,
+          "verifiable_citation_grounding": 88.4
+        }
+      }
+    }
+  }
+}

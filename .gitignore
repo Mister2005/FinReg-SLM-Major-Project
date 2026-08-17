@@ -21,6 +21,11 @@ ENV/
 !**/adapters/**/chat_template.jinja
 !**/adapters/**/tokenizer.json
 
+# Local Model Weights & Checkpoints Directory
+04_Phase_4_Model_Training_DeepSeek_R1/models/
+models/
+checkpoints/
+
 # OS specific
 .DS_Store
 Thumbs.db
@@ -30,5 +35,5 @@ desktop.ini
 .vscode/
 .idea/
 .claude/
-00_Academic_Deliverables/*
-07_Research_and_Literature/*
+00_Academic_Deliverables/
+07_Research_and_Literature/
