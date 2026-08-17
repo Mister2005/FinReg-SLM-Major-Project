@@ -1,9 +1,9 @@
 # FinReg-SLM: Master Project Repository & Technical Hub
 
 **Project Title:** FinReg-SLM — Domain-Specialized Small Language Model for Multi-Agency Indian Financial Regulatory Compliance  
-**Student Name:** Varun Gupta | **SAP ID:** 60004220055 | **UID:** 2022300055  
+**Student Name:** Varun Gupta | **SAP ID:** 60018230100  
 **Course:** Research Ecosystem (DJS23ITELX12) | Final Year B.Tech. in AI & DS (Sem VII)  
-**Institution:** SVKM's NMIMS, Mukesh Patel School of Technology Management & Engineering (MPSTME)  
+**Institution:** SVKM's Dwarkadas J. Sanghvi College of Engineering (DJSCE), Mumbai  
 **Date:** August 17, 2026  
 
 ---

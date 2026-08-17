@@ -1,8 +1,8 @@
 # Top 8 Core Literature Review Papers: Methodology, Research Gaps, and Empirical Fixes
 
 **Project:** FinReg-SLM (Domain-Specialized Small Language Model for Indian Financial Compliance)  
-**Author:** Varun Gupta (UID: 2022300055)  
-**Institution:** SVKM's NMIMS, MPSTME, Department of AI & DS  
+**Author:** Varun Gupta (UID: 60018230100)  
+**Institution:** SVKM's DJSCE, Department of AI & DS  
 **Date:** August 17, 2026  
 
 ---

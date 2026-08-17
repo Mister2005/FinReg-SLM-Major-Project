@@ -1,7 +1,7 @@
 # IndiaFinBench Empirical Evaluation Study & Model Scaling Roadmap
 
 **Project:** FinReg-SLM — Domain-Specialized Small Language Model for Indian Financial Compliance  
-**Author:** Varun Gupta (UID: 2022300055)  
+**Author:** Varun Gupta (UID: 60018230100)  
 **Evaluation Date:** August 17, 2026  
 **Evaluated Artifact:** Stage 2 Aligned DeepSeek-R1-7B DPO (`Phase 4 - Second Approach/runs/stage2_r1_7b_dpo/merged`)  
 **External Benchmark:** IndiaFinBench (*arXiv:2604.19298, Rajveer Singh Pall et al.*)  

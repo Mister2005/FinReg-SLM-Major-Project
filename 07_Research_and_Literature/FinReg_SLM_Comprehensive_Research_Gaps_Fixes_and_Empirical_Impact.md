@@ -1,8 +1,8 @@
 # FinReg-SLM: Literature Research Gaps, Architectural Fixes, and Empirical Score Impacts
 
-**Author:** Varun Gupta (UID: 2022300055)  
+**Author:** Varun Gupta (UID: 60018230100)  
 **Project:** Domain-Specialized Small Language Model for Indian Financial Compliance (FinReg-SLM)  
-**Academic Context:** B.Tech Major Project (Semester 7/8, MPSTME, NMIMS Mumbai)  
+**Academic Context:** B.Tech Major Project (Semester 7/8, DJSCE, Mumbai)  
 **Theoretical Framing & Review Style:** Andrej Karpathy (First-Principles Deep Learning & System Architecture)
 
 ---

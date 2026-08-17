@@ -206,7 +206,7 @@ python 06_Final_Empirical_Benchmarking/src/evaluate_indiafinbench.py
 ## 🎓 Academic Details
 
 * **Author:** Varun Gupta  
-* **SAP ID:** 60004220055 | **UID:** 2022300055  
+* **SAP ID:** 60018230100  
 * **Program:** Final Year B.Tech. in Artificial Intelligence & Data Science (Sem VII, AY 2026–27)  
 * **Course:** Research Ecosystem (DJS23ITELX12) | Department of AI & DS  
-* **Institution:** SVKM's NMIMS, Mukesh Patel School of Technology Management & Engineering (MPSTME), Mumbai, India  
+* **Institution:** SVKM's Dwarkadas J. Sanghvi College of Engineering (DJSCE), Mumbai, India
