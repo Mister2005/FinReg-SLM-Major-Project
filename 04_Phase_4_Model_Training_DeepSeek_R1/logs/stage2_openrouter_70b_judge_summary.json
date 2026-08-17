@@ -1,0 +1,54 @@
+{
+  "overall_judge_score": 70.7062333333332,
+  "mean_factual_correctness": 73.16666666666667,
+  "mean_citation_grounding": 72.83333333333334,
+  "mean_abstention_quality": 75.33333333333333,
+  "factual_accuracy_C1_C4": 78.81904761904761,
+  "abstention_calibration_C5_C6": 51.776333333333355,
+  "category_breakdown": {
+    "C1": {
+      "overall": 92.16666666666666,
+      "factual_correctness": 90.0,
+      "citation_grounding": 99.16666666666667,
+      "abstention_quality": 93.33333333333333,
+      "count": 60
+    },
+    "C2": {
+      "overall": 94.44,
+      "factual_correctness": 93.0,
+      "citation_grounding": 97.0,
+      "abstention_quality": 96.0,
+      "count": 50
+    },
+    "C3": {
+      "overall": 96.66666666666667,
+      "factual_correctness": 95.0,
+      "citation_grounding": 100.0,
+      "abstention_quality": 98.33333333333333,
+      "count": 60
+    },
+    "C4": {
+      "overall": 12.5,
+      "factual_correctness": 2.5,
+      "citation_grounding": 93.75,
+      "abstention_quality": 2.5,
+      "count": 40
+    },
+    "C5": {
+      "overall": 58.80925,
+      "factual_correctness": 80.0,
+      "citation_grounding": 11.25,
+      "abstention_quality": 82.5,
+      "count": 40
+    },
+    "C6": {
+      "overall": 46.150000000000006,
+      "factual_correctness": 57.99999999999999,
+      "citation_grounding": 17.0,
+      "abstention_quality": 57.99999999999999,
+      "count": 50
+    }
+  },
+  "total_queries_judged": 300,
+  "judge_model": "meta-llama/llama-3.3-70b-instruct (OpenRouter)"
+}

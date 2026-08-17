@@ -1,0 +1,32 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Large Model Weights (Keep adapter configs & metadata, ignore giant 15GB safetensors)
+*.safetensors
+*.bin
+*.pt
+*.pth
+!**/adapters/**/adapter_config.json
+!**/adapters/**/tokenizer_config.json
+!**/adapters/**/chat_template.jinja
+!**/adapters/**/tokenizer.json
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+.claude/

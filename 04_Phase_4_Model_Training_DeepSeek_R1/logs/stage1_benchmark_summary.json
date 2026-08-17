@@ -1,0 +1,15 @@
+{
+  "overall_score": 69.83333333333334,
+  "category_breakdown": {
+    "C1": 100.0,
+    "C2": 100.0,
+    "C3": 99.16666666666667,
+    "C4": 100.0,
+    "C5": 0.0,
+    "C6": 0.0
+  },
+  "factual_accuracy_C1_C4": 99.76190476190476,
+  "abstention_calibration_C5_C6": 0.0,
+  "citation_presence_rate": 90.66666666666666,
+  "total_queries": 300
+}

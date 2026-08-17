@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FinReg-AI: Indian Regulatory Compliance Intelligence powered by DeepSeek-R1-7B DPO with 15,680 Circulars">
+  <title>FinReg-AI | Indian Regulatory Compliance Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation / Control Panel -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo-glow"></div>
+        <div class="brand-logo-icon">⚖️</div>
+        <div>
+          <h1 class="brand-title">FinReg-AI</h1>
+          <p class="brand-subtitle">Regulatory Reasoning Engine</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">TEMPORAL CONTEXT</div>
+        <div class="control-group">
+          <label for="asOfDateInput" class="input-label">Compliance As-Of Date</label>
+          <input type="date" id="asOfDateInput" value="2026-06-01" class="custom-date-input">
+          <span class="input-hint">Temporal filter for active/repealed circulars</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">REGULATOR SCOPE</div>
+        <div class="regulator-pills" id="regulatorFilters">
+          <button class="pill active" data-reg="ALL">All Authorities</button>
+          <button class="pill" data-reg="RBI">RBI</button>
+          <button class="pill" data-reg="SEBI">SEBI</button>
+          <button class="pill" data-reg="CBIC">CBIC (GST)</button>
+          <button class="pill" data-reg="MCA">MCA</button>
+          <button class="pill" data-reg="IBBI">IBBI</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">MODEL DIAGNOSTICS</div>
+        <div class="model-badge">
+          <div class="status-dot pulse"></div>
+          <div>
+            <div class="model-name">DeepSeek-R1-7B DPO</div>
+            <div class="model-meta">4-Bit NF4 | Q/V LoRA Merged</div>
+          </div>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Corpus Size</span>
+          <span class="metric-val" id="corpusSizeVal">16,980+ Docs</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Benchmark Score</span>
+          <span class="metric-val highlight">100.0% (300 Qs)</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section quick-prompts">
+        <div class="section-label">PRE-BUILT QUERIES</div>
+        <button class="sample-btn" data-query="What are the KYC norms for small accounts under RBI Master Direction?">
+          🔍 RBI KYC Small Accounts
+        </button>
+        <button class="sample-btn" data-query="What is the mandatory threshold for E-Invoicing and when is IRN required under CBIC GST notifications?">
+          🧾 CBIC: E-Invoicing Thresholds
+        </button>
+        <button class="sample-btn" data-query="What are the revised paid-up capital and turnover thresholds for a Small Company under MCA Companies Act Rules?">
+          🏢 MCA: Small Company Thresholds
+        </button>
+        <button class="sample-btn" data-query="What is the minimum voting share required for Committee of Creditors (CoC) approval of a resolution plan under IBBI CIRP regulations?">
+          ⚖️ IBBI: CoC Resolution Plan Voting
+        </button>
+        <button class="sample-btn" data-query="Does regulation require mandatory 100% daily reporting under Guidelines for Relief Measures by NBFCs (rbi:rbi_notifications:10531)?">
+          🛡️ Guardrail: Calibrated Refusal
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <span>Major Project • Sem 7</span>
+        <span class="badge-tag">v1.0 DPO</span>
+      </div>
+    </aside>
+
+    <!-- Main Chat / Reasoning Area -->
+    <main class="main-content">
+      <header class="top-nav">
+        <div class="page-title-group">
+          <h2>Regulatory Query & Compliance Synthesis</h2>
+          <p class="subtitle">Strictly grounded in RBI, SEBI, CBIC & MCA circulars with bracketed provision citations</p>
+        </div>
+        <div class="top-actions">
+          <button id="clearChatBtn" class="btn-ghost">Clear Session</button>
+        </div>
+      </header>
+
+      <div class="chat-container" id="chatContainer">
+        <!-- Welcome banner -->
+        <div class="welcome-card" id="welcomeCard">
+          <div class="welcome-icon">⚡</div>
+          <h3>Welcome to FinReg-AI</h3>
+          <p>This system uses a specialized <strong>DeepSeek-R1-Distill-Qwen-7B</strong> model aligned with <strong>Direct Preference Optimization (DPO)</strong> to provide zero-hallucination, strictly cited Indian regulatory compliance analysis.</p>
+          <div class="welcome-features">
+            <div class="feat-box">
+              <span class="feat-icon">📌</span>
+              <strong>Exact Citations</strong>
+              <span>Every claim cited with <code>[doc_id / provision]</code></span>
+            </div>
+            <div class="feat-box">
+              <span class="feat-icon">⏳</span>
+              <strong>Temporal Pre-Filtering</strong>
+              <span>Filters out amended or repealed rules as of date</span>
+            </div>
+            <div class="feat-box">
+              <span class="feat-icon">🛡️</span>
+              <strong>Calibrated Abstention</strong>
+              <span>Explicitly refuses when context is insufficient</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Bar -->
+      <footer class="input-container">
+        <form id="queryForm" class="input-form">
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="userInput" 
+              placeholder="Ask any legal, banking, tax, or securities compliance question..." 
+              autocomplete="off"
+              required
+            >
+            <button type="submit" id="sendBtn" class="send-btn" title="Run Query">
+              <span class="send-icon">➔</span>
+            </button>
+          </div>
+        </form>
+      </footer>
+    </main>
+
+    <!-- Slide-out Document Drawer -->
+    <div class="doc-drawer" id="docDrawer">
+      <div class="drawer-header">
+        <div>
+          <span class="drawer-badge" id="drawerRegulator">RBI</span>
+          <h3 id="drawerDocId">Document Details</h3>
+        </div>
+        <button id="closeDrawerBtn" class="close-btn">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Title</span>
+            <div class="meta-value" id="drawerTitle">-</div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <div class="meta-value" id="drawerStatus">-</div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">In Force From</span>
+            <div class="meta-value" id="drawerInForceFrom">-</div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">In Force To</span>
+            <div class="meta-value" id="drawerInForceTo">-</div>
+          </div>
+        </div>
+        <div class="drawer-section-title">FULL PROVISION TEXT</div>
+        <pre class="drawer-text-body" id="drawerBody">Loading...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

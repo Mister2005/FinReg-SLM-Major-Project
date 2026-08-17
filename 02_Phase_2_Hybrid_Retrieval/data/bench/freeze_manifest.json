@@ -1,0 +1,20 @@
+{
+  "benchmark_file": "seed-benchmark-v1.jsonl",
+  "sha256": "756d2e37e2178cd7421349d490140ea7ea0f22ef999aa3fd1929ca8c0efbe03e",
+  "tag": "bench-v1",
+  "freeze_date": "2026-08-12T00:51:58.107464",
+  "total_records": 300,
+  "total_excluded_docs": 210,
+  "category_counts": {
+    "C1": 60,
+    "C2": 50,
+    "C3": 60,
+    "C4": 40,
+    "C5": 40,
+    "C6": 50
+  },
+  "regulator_counts": {
+    "RBI": 300
+  },
+  "excluded_doc_ids_file": "excluded_doc_ids.json"
+}

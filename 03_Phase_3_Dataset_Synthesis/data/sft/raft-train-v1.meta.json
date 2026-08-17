@@ -1,0 +1,12 @@
+{
+  "version": "raft-v1",
+  "total_examples": 1008,
+  "skill_distribution": {
+    "citation": 400,
+    "temporal": 259,
+    "synthesis": 199,
+    "abstention": 150
+  },
+  "excluded_doc_ids_hash": "6dbbd0d746cc8ae4c73db35ef673ad1f89d0b4edc84450685f7f80dd215f3b17",
+  "updated_at": "2026-08-13T06:56:42.006961"
+}

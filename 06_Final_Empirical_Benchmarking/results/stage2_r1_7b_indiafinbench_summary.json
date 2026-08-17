@@ -1,0 +1,50 @@
+{
+  "benchmark_name": "IndiaFinBench (Test Split - 324 queries)",
+  "model_name": "FinReg-SLM DeepSeek-R1-7B (Stage 2 DPO)",
+  "judge_model": "Meta-Llama-3.3-70B-Instruct (OpenRouter)",
+  "overall_accuracy": 80.98,
+  "mean_reasoning_quality": 84.66,
+  "total_samples": 326,
+  "task_breakdown": {
+    "regulatory_interpretation": {
+      "accuracy": 90.28776978417267,
+      "count": 139
+    },
+    "numerical_reasoning": {
+      "accuracy": 69.17808219178082,
+      "count": 73
+    },
+    "contradiction_detection": {
+      "accuracy": 79.0,
+      "count": 50
+    },
+    "temporal_reasoning": {
+      "accuracy": 75.78125,
+      "count": 64
+    }
+  },
+  "source_breakdown": {
+    "SEBI": {
+      "accuracy": 80.2919708029197,
+      "count": 274
+    },
+    "RBI": {
+      "accuracy": 84.61538461538461,
+      "count": 52
+    }
+  },
+  "difficulty_breakdown": {
+    "easy": {
+      "accuracy": 87.4015748031496,
+      "count": 127
+    },
+    "medium": {
+      "accuracy": 80.27210884353741,
+      "count": 147
+    },
+    "hard": {
+      "accuracy": 67.3076923076923,
+      "count": 52
+    }
+  }
+}
