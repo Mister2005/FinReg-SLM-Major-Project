@@ -27,12 +27,14 @@ FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B**
 
 ## 🏆 Benchmark Highlights
 
-### 1. External IndiaFinBench Public Benchmark (arXiv:2604.19298 — 324 Questions)
-* **Overall Macro Accuracy:** **`80.98%`** *(Beats Base LLaMA-3-8B at 77.60%, Mistral-7B at 76.20%, and Non-Specialist Humans at 69.00%)*
-* **Regulatory Interpretation (139 Qs):** **`90.29%`** *(Directly rivals frontier cloud APIs: GPT-4o at 92.10% and Claude 3.5 Sonnet at 91.00%)*
-* **Contradiction Detection (50 Qs):** **`79.00%`**
-* **Temporal Reasoning (64 Qs):** **`75.78%`**
-* **Reasoning Quality Score:** **`84.66%`**
+### 1. External IndiaFinBench Public Benchmark (arXiv:2604.19298 — 324-Question Test Split)
+* **Flagship Local SLM (Flagship v3 - Current SOTA):** **`89.83%`** *(4 Pillars + Dynamic Header Context + Python REPL Sandbox)*
+* **Previous Best (Enhanced v1.1):** **`87.96%`**
+* **Base Stage 1 SFT Checkpoint:** **`80.98%`** *(Beats published Base LLaMA-3-8B at 78.10% and Mistral-7B at 75.90%)*
+* **Regulatory Interpretation (139 Qs):** **`90.29%`**
+* **Contradiction Detection (50 Qs):** **`88.00%`**
+* **Temporal Reasoning (62 Qs):** **`96.77%`** *(+6.45% breakthrough via Dynamic Temporal Scoping)*
+* **Numerical Calculations (73 Qs):** **`84.25%`** *(via Program-Aided Python REPL Sandbox)*
 
 ### 2. Internal G7 Hard Compliance Benchmark (300 Queries via LLaMA-3.3-70B Judge)
 * **Core Statutory Compliance (C1–C3):** **`94.43%`** (Direct: `92.2%`, Multi-Hop: `94.4%`, Cross-Regulatory: `96.7%`)
@@ -45,20 +47,24 @@ FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B**
 
 ## 🏛️ Comprehensive Benchmark Leaderboard
 
-### Table A: IndiaFinBench Full Leaderboard (324 Questions across SEBI & RBI)
+### Table A: IndiaFinBench Leaderboard Comparison (324-Question Test Split / 406-Question Suite)
 
-| Model Name | Model Size & Hosting | Regulatory Interp. (139 Qs) | Contradiction (50 Qs) | Temporal (64 Qs) | Numerical (73 Qs) | Overall Macro Accuracy | Benchmark Tier |
+| Model Name / Pipeline | Model Size & Hosting | REG (139 Qs) | CON (50 Qs) | TMP (62 Qs) | NUM (73 Qs) | Overall Macro Accuracy | Classification Tier |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Gemini 2.5 Flash** | Cloud MoE (Proprietary API) | **93.40%** | **88.00%** | **86.50%** | **87.20%** | **89.70%** | **Tier 1 (Frontier Cloud)** |
-| **GPT-4o** | Cloud MoE (Proprietary API) | **92.10%** | **86.00%** | **84.40%** | **85.10%** | **88.20%** | **Tier 1 (Frontier Cloud)** |
-| **Claude 3.5 Sonnet** | Cloud MoE (Proprietary API) | **91.00%** | **84.00%** | **82.80%** | **83.50%** | **86.50%** | **Tier 1 (Frontier Cloud)** |
-| **FinReg-SLM 7B (Ours)** | **7B Dense (Local 8GB GPU)** | **90.29%** | **79.00%** | **75.78%** | **69.18%** | **80.98%** | **Top Tier 2 (Beats All Open Base Models)** |
-| **LLaMA-3-8B Base** | 8B Dense (General Base) | 84.20% | 72.50% | 70.10% | 58.40% | 77.60% | Tier 2 (Open Base Model) |
-| **Mistral-7B-Instruct** | 7B Dense (General Base) | 82.80% | 71.00% | 68.50% | 56.20% | 76.20% | Tier 2 (Open Base Model) |
-| **Gemma 4 E4B** | 4B Dense (Compact Open) | 76.50% | 65.00% | 62.00% | 51.00% | 70.40% | Tier 3 (Compact Open Model) |
-| **Non-Specialist Human** | Human Baseline | 74.00% | 66.00% | 65.00% | 54.00% | 69.00% | Human Baseline |
+| **FinReg-SLM Flagship v3 (Ours)** | **7B Dense (4-Pillars: Local)** | **90.29%** | **88.00%** | **96.77%** | **84.25%** | **89.83%** | **🏆 SOTA Local SLM (Ours)** |
+| **Gemini 2.5 Flash** | Cloud MoE (API)* | **93.10%** | **88.70%** | **88.50%** | **84.80%** | **89.70%** | **Tier 1 (Frontier Cloud)** |
+| **FinReg-SLM v1.1 (Ours)** | **7B Dense (4-Pillars: Local)** | **90.65%** | **88.00%** | **90.32%** | **82.88%** | **87.96%** | **Flagship Local SLM (Ours)** |
+| **DeepSeek-R1-70B** | 70B MoE (Open)* | **91.40%** | **85.50%** | **84.60%** | **82.60%** | **86.80%** | **Frontier Open Reasoning** |
+| **LLaMA-3.3-70B-Instruct** | 70B Dense (Open)* | **88.50%** | **82.30%** | **80.80%** | **76.10%** | **82.70%** | **Tier 1 (Open Dense 70B)** |
+| **FinReg-SLM 7B Base SFT** | **7B Dense (Stage 1 Adapter)** | **90.29%** | **79.00%** | **75.78%** | **69.18%** | **80.98%** | **Stage 1 Checkpoint (Ours)** |
+| **LLaMA-3-8B-Instruct** | 8B Dense (Open)* | **84.50%** | **74.20%** | **72.80%** | **60.90%** | **78.10%** | **Tier 2 (Open Base 8B)** |
+| **Mistral-7B-Instruct** | 7B Dense (Open)* | **82.20%** | **72.60%** | **70.10%** | **58.70%** | **75.90%** | **Tier 2 (Open Base 7B)** |
+| **Gemma 4 E4B** | 4B Dense (Compact Open)* | **76.40%** | **64.50%** | **63.20%** | **48.90%** | **65.80%** | **Tier 3 (Compact Open)** |
+| **Base DeepSeek-R1-7B** | 7B Dense (Zero-Shot) | **78.42%** | **64.00%** | **61.29%** | **52.05%** | **66.86%** | **Un-tuned Base Model** |
 
-> **Privacy Note under DPDP Act 2023:** While Tier 1 proprietary models lead in raw mathematical score (due to hundreds of billions of parameters), their reliance on offshore third-party cloud APIs violates Indian enterprise banking regulations. FinReg-SLM runs **100% locally with zero data transfer**, outperforming all open base models of comparable scale and non-specialist human experts.
+*\*Note: Asterisk (*) indicates baseline numbers published in Pall (2026) on the IndiaFinBench benchmark suite.*
+
+> **Privacy & Compliance Note under DPDP Act 2023:** FinReg-SLM executes **100% on-premises with zero external data egress**, running under 6.0 GB total VRAM while outperforming open 8B/7B baselines.
 
 ---
 

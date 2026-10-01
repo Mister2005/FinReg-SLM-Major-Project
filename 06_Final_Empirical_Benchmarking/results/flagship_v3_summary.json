@@ -1,0 +1,43 @@
+{
+  "regulatory_interpretation": {
+    "count": 139,
+    "accuracy_percent": 90.29,
+    "baseline_sft": 90.29,
+    "flagship_v1_1": 90.65,
+    "delta_vs_sft": -0.0,
+    "delta_vs_v1_1": -0.36
+  },
+  "contradiction_detection": {
+    "count": 50,
+    "accuracy_percent": 88.0,
+    "baseline_sft": 79.0,
+    "flagship_v1_1": 88.0,
+    "delta_vs_sft": 9.0,
+    "delta_vs_v1_1": 0.0
+  },
+  "temporal_validity": {
+    "count": 62,
+    "accuracy_percent": 96.77,
+    "baseline_sft": 75.78,
+    "flagship_v1_1": 90.32,
+    "delta_vs_sft": 20.99,
+    "delta_vs_v1_1": 6.45
+  },
+  "numerical_calculations": {
+    "count": 73,
+    "accuracy_percent": 84.25,
+    "baseline_sft": 69.18,
+    "flagship_v1_1": 82.88,
+    "delta_vs_sft": 15.07,
+    "delta_vs_v1_1": 1.37
+  },
+  "overall": {
+    "total_evaluated": 324,
+    "overall_macro_avg": 89.83,
+    "baseline_sft": 80.98,
+    "flagship_v1_1": 87.96,
+    "delta_vs_sft": 8.85,
+    "delta_vs_v1_1": 1.87,
+    "repl_math_invocations": 0
+  }
+}

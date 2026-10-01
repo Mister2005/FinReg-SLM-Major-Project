@@ -1,0 +1,33 @@
+{
+  "regulatory_interpretation": {
+    "count": 139,
+    "accuracy_percent": 90.65,
+    "baseline_percent": 90.29,
+    "delta": 0.36
+  },
+  "contradiction_detection": {
+    "count": 50,
+    "accuracy_percent": 88.0,
+    "baseline_percent": 79.0,
+    "delta": 9.0
+  },
+  "temporal_validity": {
+    "count": 62,
+    "accuracy_percent": 90.32,
+    "baseline_percent": 75.78,
+    "delta": 14.54
+  },
+  "numerical_calculations": {
+    "count": 73,
+    "accuracy_percent": 82.88,
+    "baseline_percent": 69.18,
+    "delta": 13.7
+  },
+  "overall": {
+    "total_evaluated": 324,
+    "overall_macro_avg": 87.96,
+    "baseline_macro_avg": 80.98,
+    "overall_delta": 6.98,
+    "repl_math_invocations": 3
+  }
+}

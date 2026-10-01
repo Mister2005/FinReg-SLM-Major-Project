@@ -16,6 +16,54 @@ logger = logging.getLogger("rag_engine")
 ROOT_DIR = Path(r"c:\Users\Varun\Desktop\Main\Sem 7\Major Project")
 MANIFEST_DB = ROOT_DIR / "Phase 1" / "data" / "manifest.db"
 
+# Local BGE Cross-Encoder Reranker (100% On-Premises, Zero Cloud Egress, DPDP Act Compliant)
+class LocalBGEReranker:
+    """Local Cross-Encoder Reranker running directly on local GPU/CPU under 600MB VRAM."""
+    _instance = None
+
+    @classmethod
+    def get_instance(cls, model_name: str = "BAAI/bge-reranker-base"):
+        if cls._instance is None:
+            cls._instance = cls(model_name)
+        return cls._instance
+
+    def __init__(self, model_name: str = "BAAI/bge-reranker-base"):
+        self.model_name = model_name
+        self.model = None
+        try:
+            from sentence_transformers import CrossEncoder
+            import torch
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            self.model = CrossEncoder(model_name, max_length=512, device=device)
+            logger.info(f"Loaded Local BGE Cross-Encoder ({model_name}) on {device}. DPDP Act Compliant.")
+        except Exception as e:
+            logger.warning(f"Local CrossEncoder initialization deferred/fallback: {e}")
+
+    def rerank(self, query: str, passages: List[str], top_k: int = 4) -> List[Dict[str, Any]]:
+        if not passages:
+            return []
+        if self.model is not None:
+            try:
+                pairs = [[query, p] for p in passages]
+                scores = self.model.predict(pairs)
+                ranked = sorted(
+                    [{"original_index": i, "score": float(s), "text": passages[i]} for i, s in enumerate(scores)],
+                    key=lambda x: x["score"],
+                    reverse=True
+                )
+                for rank, item in enumerate(ranked[:top_k], 1):
+                    item["rank"] = rank
+                return ranked[:top_k]
+            except Exception as e:
+                logger.warning(f"Local cross-encoder prediction error: {e}")
+
+        # Fallback: maintain initial order
+        return [
+            {"rank": i + 1, "score": round(1.0 / (i + 1), 3), "text": p, "original_index": i}
+            for i, p in enumerate(passages[:top_k])
+        ]
+
+
 class RegulatoryRAGEngine:
     def __init__(self, db_path: Path = MANIFEST_DB):
         self.db_path = db_path
@@ -58,39 +106,41 @@ class RegulatoryRAGEngine:
             if row:
                 return dict(row)
 
-            # 2. Substring / LIKE match
-            cur.execute(
-                """
-                SELECT d.doc_id, d.title, d.regulator, d.in_force_from, d.in_force_to, 
-                       d.status, d.source_url, d.pdf_url, t.body
-                FROM documents d
-                LEFT JOIN texts t ON d.doc_id = t.doc_id
-                WHERE d.doc_id LIKE ? OR d.title LIKE ?
-                LIMIT 1
-                """,
-                (f"%{doc_id_clean}%", f"%{doc_id_clean}%")
-            )
-            row = cur.fetchone()
-            if row:
-                return dict(row)
-
-            # 3. Numeric ID match if digits present (e.g. 10321)
-            digits = re.findall(r'\d+', doc_id_clean)
-            if digits:
+            # 2. Substring / LIKE match on document ID or title circular codes (e.g. FIDD.CO.Plan.BC.No.8)
+            if len(doc_id_clean) >= 6:
                 cur.execute(
                     """
                     SELECT d.doc_id, d.title, d.regulator, d.in_force_from, d.in_force_to, 
                            d.status, d.source_url, d.pdf_url, t.body
                     FROM documents d
                     LEFT JOIN texts t ON d.doc_id = t.doc_id
-                    WHERE d.doc_id LIKE ?
+                    WHERE d.doc_id LIKE ? OR d.title LIKE ?
                     LIMIT 1
                     """,
-                    (f"%:{digits[-1]}",)
+                    (f"%{doc_id_clean}%", f"%{doc_id_clean}%")
                 )
                 row = cur.fetchone()
                 if row:
                     return dict(row)
+
+            # 3. Numeric ID match ONLY if query is pure digits or starts with notification prefix
+            if doc_id_clean.isdigit() or doc_id_clean.startswith("rbi_notifications:") or doc_id_clean.startswith("sebi_circulars:"):
+                digits = re.findall(r'\d+', doc_id_clean)
+                if digits:
+                    cur.execute(
+                        """
+                        SELECT d.doc_id, d.title, d.regulator, d.in_force_from, d.in_force_to, 
+                               d.status, d.source_url, d.pdf_url, t.body
+                        FROM documents d
+                        LEFT JOIN texts t ON d.doc_id = t.doc_id
+                        WHERE d.doc_id LIKE ?
+                        LIMIT 1
+                        """,
+                        (f"%:{digits[-1]}",)
+                    )
+                    row = cur.fetchone()
+                    if row:
+                        return dict(row)
 
         return None
 
@@ -100,7 +150,8 @@ class RegulatoryRAGEngine:
         as_of_date: str = "2026-06-01",
         regulator_filter: Optional[str] = None,
         max_chunks: int = 4,
-        min_relevance_score: int = 15
+        min_relevance_score: int = 15,
+        use_cloud_reranker: bool = False,
     ) -> List[Dict[str, Any]]:
         """
         Search for relevant circulars respecting temporal validity as of `as_of_date`.
@@ -219,9 +270,32 @@ class RegulatoryRAGEngine:
                 "relevance_score": score,
             })
 
-        # Sort by relevance
+        # Sort by initial relevance
         results.sort(key=lambda x: x["relevance_score"], reverse=True)
+
+        # Local Cross-Encoder Re-ranking (100% On-Premises)
+        if use_cloud_reranker and len(results) > 1:
+            try:
+                reranker = LocalBGEReranker.get_instance()
+                candidate_pool = results[:10]  # Take top 10 for fine-grained re-ranking
+                passages = [f"{c['title']}: {c['body'][:400]}" for c in candidate_pool]
+                ranked_items = reranker.rerank(query, passages, top_k=max_chunks)
+                
+                reranked_results = []
+                for item in ranked_items:
+                    orig_idx = item.get("original_index", 0)
+                    if orig_idx < len(candidate_pool):
+                        entry = dict(candidate_pool[orig_idx])
+                        entry["cross_encoder_score"] = item["score"]
+                        reranked_results.append(entry)
+                
+                if reranked_results:
+                    return reranked_results
+            except Exception as e:
+                logger.warning(f"Local reranking skipped due to: {e}")
+
         return results[:max_chunks]
+
 
     def build_inference_messages(
         self,
