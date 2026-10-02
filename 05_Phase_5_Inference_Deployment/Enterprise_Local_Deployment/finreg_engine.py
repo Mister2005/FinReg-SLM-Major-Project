@@ -171,9 +171,12 @@ class FinRegEngine:
         search_dirs = [
             Path("."),
             Path(".."),
-            Path("Kaggle_TPU_FinReg_Training/kaggle_completed_run"),
+            Path("../.."),
+            Path("04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage2_dpo_adapter"),
+            Path("FinReg_SLM_Unified_Project_Hub/04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage2_dpo_adapter"),
             Path("Phase 4 - Second Approach/runs/stage2_r1_7b_margin_dpo/final_adapter"),
-            Path("FinReg_SLM_Unified_Project_Hub/04_Phase_4_Model_Training_DeepSeek_R1/models/Version_1/adapters/stage2_dpo_adapter")
+            Path("Kaggle_TPU_FinReg_Training/kaggle_completed_run"),
+            Path("Kaggle_Benchmark_Run")
         ]
         for base_dir in search_dirs:
             if base_dir.exists():
@@ -353,15 +356,41 @@ class FinRegEngine:
         active_ans = final_ans_p1
         active_reasoning = reasoning_p1
 
-        # ── PASS 2: TARGETED SELF-CORRECTION (IF TRIGGERED) ──
+        # ── PASS 2: TARGETED SELF-CORRECTION (TASK-ADAPTIVE STATUTORY FALLBACK) ──
         if needs_correction:
             passes_used = 2
-            user_msg_p2 = (
-                f"REGULATORY CONTEXT [{doc_id}]:\n"
-                f'"""\n{context}\n"""\n\n'
-                f"QUESTION: {query}\n\n"
-                f"Answer based ONLY on the regulatory context above:"
-            )
+            
+            # Task-Adaptive Pristine Statutory Framing (Flagship v5.3 Architecture)
+            if 'temp' in task_type.lower() or 'date' in task_type.lower():
+                user_msg_p2 = (
+                    f"REGULATORY CONTEXT [{doc_id}]:\n"
+                    f'"""\n{context}\n"""\n\n'
+                    f"QUESTION: {query}\n\n"
+                    f'Answer based ONLY on the regulatory context above. State the exact effective date (using "effective from" or "effective date") and describe the full scope of both the original and amended provisions directly from the excerpt:'
+                )
+            elif 'numeric' in task_type.lower() or 'math' in task_type.lower():
+                user_msg_p2 = (
+                    f"REGULATORY CONTEXT [{doc_id}]:\n"
+                    f'"""\n{context}\n"""\n\n'
+                    f"QUESTION: {query}\n\n"
+                    f"Extract all numbers and write Python code in ```python ... ``` to calculate the exact figure:"
+                )
+            elif 'contradict' in task_type.lower() or 'conflict' in task_type.lower():
+                user_msg_p2 = (
+                    f"REGULATORY CONTEXT [{doc_id}]:\n"
+                    f'"""\n{context}\n"""\n\n'
+                    f"QUESTION: {query}\n\n"
+                    f"Deliberate inside <think> tags. On Line 1, state either 'Final Answer: Yes' (if they agree, are identical, create an exception, or confirm the questioned condition) or 'Final Answer: No' (if they contradict, differ, conflict, or disprove). Follow immediately with exact quoted clauses from both passages:"
+                )
+            else:
+                # Regulatory Interpretation & Conditions
+                user_msg_p2 = (
+                    f"REGULATORY CONTEXT [{doc_id}]:\n"
+                    f'"""\n{context}\n"""\n\n'
+                    f"QUESTION: {query}\n\n"
+                    f"Answer based ONLY on the regulatory context above. Extract the exact statutory qualifications, consequence, conditions, or frequency (e.g. quarterly) stated in the text without preamble:"
+                )
+
             msgs_p2 = [
                 {"role": "system", "content": sys_prompt},
                 {"role": "user", "content": user_msg_p2}
@@ -383,10 +412,29 @@ class FinRegEngine:
             gen_tokens_p2 = outputs_p2[0][in_len_p2:]
             raw_resp_p2 = self.tokenizer.decode(gen_tokens_p2, skip_special_tokens=True).strip()
             raw_resp_p2 = re.sub(r'(\b[A-Za-z0-9_\-\./]{6,}\b)(?:[\s,/]+\1){2,}', r'\1', raw_resp_p2)
+
+            # Execute REPL if Pass 2 generated code
+            code_blocks_p2 = re.findall(r'```(?:python)?\s*(.*?)\s*```', raw_resp_p2, re.DOTALL)
+            if code_blocks_p2 and task_type == "numerical_calculations":
+                success_p2, res_val_p2 = self.repl.execute(code_blocks_p2[-1])
+                if success_p2 and res_val_p2:
+                    raw_resp_p2 += f"\n\n[REPL Execution Output: {res_val_p2}]"
+                    repl_executed = True
+                    repl_output = res_val_p2
+
             reasoning_p2, final_ans_p2 = self._extract_think_and_answer(raw_resp_p2)
             
-            # Adopt Pass 2 if it removed the refusal or repetitive token
-            if not any(re.search(pat, final_ans_p2, re.IGNORECASE) for pat in refusal_patterns):
+            # Anti-Cyclic Decycling Adoption Gate (v5.3 Innovation)
+            p1_cycle = bool(re.search(r'(\b[A-Za-z0-9_\-\./]{5,}\b)(?:[\s,/]+\1){3,}', raw_resp_p1))
+            p2_cycle = bool(re.search(r'(\b[A-Za-z0-9_\-\./]{5,}\b)(?:[\s,/]+\1){3,}', raw_resp_p2))
+            p1_refusal = any(re.search(pat, final_ans_p1, re.IGNORECASE) for pat in refusal_patterns)
+            p2_refusal = any(re.search(pat, final_ans_p2, re.IGNORECASE) for pat in refusal_patterns)
+
+            # Adopt Pass 2 if it resolves refusal, decycles repetitive loops, or provides superior statutory grounding
+            if (p1_refusal and not p2_refusal) or (p1_cycle and not p2_cycle):
+                active_ans = final_ans_p2
+                active_reasoning = reasoning_p2
+            elif not p2_refusal and not p2_cycle and len(final_ans_p2) > len(final_ans_p1):
                 active_ans = final_ans_p2
                 active_reasoning = reasoning_p2
 
