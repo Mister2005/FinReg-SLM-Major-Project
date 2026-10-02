@@ -17,7 +17,7 @@ Dual evaluation validating FinReg-SLM on internal hard compliance queries (300 i
 * **FinReg-SLM Flagship v4.1**: **`94.08%`**
 * **FinReg-SLM Flagship v3.0**: **`89.83%`**
 * **Base Stage 1 SFT**: **`80.98%`**
-* **External Baselines**: Surpasses **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, **LLaMA-3.3-70B (`82.70%`)**, and open 7B/8B models (`75.9% - 78.1%`).
+* **External Baselines**: Surpasses **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, **LLaMA-3.3-70B (`82.70%`)**, **Qwen3-32B (`81.10%`)**, and open 7B/8B models (`75.9% - 78.1%`).
 
 ---
 

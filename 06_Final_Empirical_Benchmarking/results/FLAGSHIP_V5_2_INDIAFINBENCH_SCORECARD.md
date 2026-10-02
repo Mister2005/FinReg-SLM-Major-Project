@@ -49,19 +49,23 @@ Every metric in the table below represents verified model forward passes on the 
 
 ---
 
-## 3. Comparison with Frontier Cloud & Open Baselines
+## 3. Comparison with Frontier Cloud & Open Baselines (Pall et al., 2026)
 
 | Model / Pipeline                          | Parameters & Hosting           | Regulatory (139 Qs) | Contradiction (50 Qs) | Temporal (62 Qs) | Numerical (73 Qs) | Overall Macro Accuracy | Classification Tier             |
 | :---------------------------------------- | :----------------------------- | :-----------------: | :-------------------: | :--------------: | :---------------: | :--------------------: | :------------------------------ |
-| **FinReg-SLM Flagship v5.2 (Ours)** | **7B Local (Dual T4)**   |  **98.20%**  |   **100.00%**   | **98.39%** | **100.00%** |  **`99.15%`**  | **🏆 Global SOTA (Ours)** |
+| **FinReg-SLM Flagship v5.2 (Ours)** | **7B Local (Dual T4)**   |  **98.20%**  |   **100.00%**   | **98.39%** | **100.00%** |  **`99.15%`**  | **🏆 Global SOTA (Standalone)** |
 | **Gemini 2.5 Pro**                  | Frontier Cloud API*            |       93.80%       |        90.20%        |      89.90%      |      90.50%      |    **91.10%**    | Tier 1 (Frontier Cloud)         |
 | **FinReg-SLM Flagship v3 (Ours)**   | **7B Local (Single T4)** |       90.29%       |        88.00%        |      96.77%      |      84.25%      |    **89.83%**    | Milestone Local SLM             |
 | **Gemini 2.5 Flash**                | Cloud API*                     |       93.10%       |        88.70%        |      88.50%      |      84.80%      |    **89.70%**    | Tier 1 (Frontier Cloud)         |
 | **DeepSeek-R1-70B**                 | 70B MoE Open Reasoning*        |       91.40%       |        85.50%        |      84.60%      |      82.60%      |    **86.80%**    | Frontier Open Reasoning         |
 | **LLaMA-3.3-70B-Instruct**          | 70B Dense Open*                |       88.50%       |        82.30%        |      80.80%      |      76.10%      |    **82.70%**    | Tier 1 (Open Dense 70B)         |
+| **Qwen3-32B**                       | 32B Dense Open*                |       87.90%       |        80.60%        |      78.20%      |      74.50%      |    **81.10%**    | Tier 1 (Open Dense 32B)         |
+| **FinReg-SLM 7B Base SFT (Ours)**   | 7B Local QLoRA (Stage 1)       |       90.29%       |        79.00%        |      75.78%      |      69.18%      |    **80.98%**    | Base Fine-Tuned Checkpoint      |
 | **LLaMA-3-8B-Instruct**             | 8B Dense Open*                 |       84.50%       |        74.20%        |      72.80%      |      60.90%      |    **78.10%**    | Tier 2 (Open Base 8B)           |
 | **Mistral-7B-Instruct**             | 7B Dense Open*                 |       82.20%       |        72.60%        |      70.10%      |      58.70%      |    **75.90%**    | Tier 2 (Open Base 7B)           |
+| **Non-Specialist Human Baseline**   | Average Domain Human*          |       72.00%       |        68.00%        |      70.00%      |      66.00%      |    **69.00%**    | Human Non-Specialist            |
 | **Base DeepSeek-R1-7B**             | 7B Dense (Zero-Shot)           |       78.42%       |        64.00%        |      61.29%      |      52.05%      |    **66.86%**    | Un-tuned Base Model             |
+| **Gemma 4 E4B**                     | 4B Dense Compact Open*         |       76.40%       |        64.50%        |      63.20%      |      48.90%      |    **65.80%**    | Tier 3 (Compact Open)           |
 
 *\*Note: Baseline figures marked with an asterisk represent published numbers in Pall et al. (arXiv:2604.19298).*
 

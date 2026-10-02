@@ -50,7 +50,7 @@ By combining a **version-aware hybrid retrieval engine** (Dense BGE-small + BM25
 * **Flagship v5.2 Standalone Run:** **`99.15%`** (320 / 324 Perfect Answers, 100% Contradiction & Math)
 * **Flagship v5.3 Standalone Run:** **`98.23%`** (319 / 324 Perfect Answers, 100% Temporal & Math, 137/139 Regulatory)
 * **Progression History:** Base SFT (`80.98%`) $\rightarrow$ v1.1 (`87.96%`) $\rightarrow$ v3.0 (`89.83%`) $\rightarrow$ v4.1 (`94.08%`) $\rightarrow$ v4.3 (`94.74%`) $\rightarrow$ v5.2 (`99.15%`) $\rightarrow$ **v5 Union (`99.91%`)**
-* **Beats Frontier Cloud Models:** Vastly outperforms **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, and **LLaMA-3.3-70B (`82.70%`)**.
+* **Beats Frontier Cloud Models:** Vastly outperforms **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, **LLaMA-3.3-70B (`82.70%`)**, and **Qwen3-32B (`81.10%`)**.
 
 ---
 

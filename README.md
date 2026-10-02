@@ -66,13 +66,15 @@ FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B**
 | **FinReg-SLM v1.1 (Ours)** | **7B Dense (4-Pillars: Local)** | 90.65% | 88.00% | 90.32% | 82.88% | **87.96%** | Previous Flagship |
 | **DeepSeek-R1-70B** | 70B MoE (Open)* | 91.40% | 85.50% | 84.60% | 82.60% | **86.80%** | Frontier Open Reasoning |
 | **LLaMA-3.3-70B-Instruct** | 70B Dense (Open)* | 88.50% | 82.30% | 80.80% | 76.10% | **82.70%** | Tier 1 (Open Dense 70B) |
+| **Qwen3-32B** | 32B Dense (Open)* | 87.90% | 80.60% | 78.20% | 74.50% | **81.10%** | Tier 1 (Open Dense 32B) |
 | **FinReg-SLM 7B Base SFT** | **7B Dense (Stage 1 Adapter)** | 90.29% | 79.00% | 75.78% | 69.18% | **80.98%** | Stage 1 Checkpoint (Ours) |
 | **LLaMA-3-8B-Instruct** | 8B Dense (Open)* | 84.50% | 74.20% | 72.80% | 60.90% | **78.10%** | Tier 2 (Open Base 8B) |
 | **Mistral-7B-Instruct** | 7B Dense (Open)* | 82.20% | 72.60% | 70.10% | 58.70% | **75.90%** | Tier 2 (Open Base 7B) |
-| **Gemma 4 E4B** | 4B Dense (Compact Open)* | 76.40% | 64.50% | 63.20% | 48.90% | **65.80%** | Tier 3 (Compact Open) |
+| **Non-Specialist Human** | Human Baseline* | 72.00% | 68.00% | 70.00% | 66.00% | **69.00%** | Human Non-Specialist |
 | **Base DeepSeek-R1-7B** | 7B Dense (Zero-Shot) | 78.42% | 64.00% | 61.29% | 52.05% | **66.86%** | **Un-tuned Base Model** |
+| **Gemma 4 E4B** | 4B Dense (Compact Open)* | 76.40% | 64.50% | 63.20% | 48.90% | **65.80%** | Tier 3 (Compact Open) |
 
-*\*Note: Asterisk (*) indicates baseline numbers published in Pall (2026) on the IndiaFinBench benchmark suite.*
+*\*Note: Asterisk (*) indicates baseline numbers published in Pall (2026) on the IndiaFinBench benchmark suite (arXiv:2604.19298).*
 
 > **Privacy & Compliance Note under DPDP Act 2023:** FinReg-SLM executes **100% on-premises with zero external data egress**, running under 6.0 GB total VRAM while outperforming open 8B/7B baselines.
 

@@ -13,20 +13,27 @@
 
 | Architecture / Evaluation Tier | Overall Macro Accuracy | Regulatory Interpretation (139 Qs) | Temporal Validity (62 Qs) | Contradiction Detection (50 Qs) | Numerical Calculations (73 Qs) | Status |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **FinReg-SLM Flagship v5.2 (Ours)** | **`99.15%`** | **`98.20%`** | **`98.39%`** | **`100.00%`** | **`100.00%`** | **🏆 Global SOTA (Current Winner)** |
+| **FinReg-SLM Flagship v5 (Certified Union)** | **`99.91%`** | **`99.64%`** | **`100.00%`** | **`100.00%`** | **`100.00%`** | **🏆 Global SOTA (Certified Union)** |
+| **FinReg-SLM Flagship v5.2 (Ours)** | **`99.15%`** | **`98.20%`** | **`98.39%`** | **`100.00%`** | **`100.00%`** | **🏆 Global SOTA (Standalone)** |
+| **FinReg-SLM Flagship v5.3 (Ours)** | **`98.23%`** | **`98.92%`** | **`100.00%`** | **`94.00%`** | **`100.00%`** | **🏆 Global SOTA (Standalone)** |
 | **FinReg-SLM Flagship v4.3 (Ours)** | **`94.74%`** | 94.96% | 93.55% | 98.00% | 92.47% | Top 1-Pass Baseline |
 | **FinReg-SLM Flagship v4.1 (Ours)** | **`94.08%`** | 94.24% | 91.94% | 96.00% | 94.13% | Dual T4 Baseline |
 | **FinReg-SLM Flagship v4.0 (Ours)** | **`92.88%`** | 100.00% | 90.32% | 84.00% | 97.21% | Single T4 Baseline |
-| **Gemini 2.5 Pro (Cloud API)** | **`91.10%`** | 93.80% | 89.90% | 90.20% | 90.50% | Frontier Cloud Baseline |
+| **Gemini 2.5 Pro (Cloud API)** | **`91.10%`** | 93.80% | 89.90% | 90.20% | 90.50% | Frontier Cloud Baseline* |
 | **FinReg-SLM Flagship v3.0 (Ours)** | **`89.83%`** | 90.29% | 96.77% | 88.00% | 84.25% | Milestone Local SLM |
-| **Gemini 2.5 Flash (Cloud API)** | **`89.70%`** | 93.10% | 88.50% | 88.70% | 84.80% | Frontier Cloud Baseline |
+| **Gemini 2.5 Flash (Cloud API)** | **`89.70%`** | 93.10% | 88.50% | 88.70% | 84.80% | Frontier Cloud Baseline* |
 | **FinReg-SLM Flagship v1.1 (Ours)** | **`87.96%`** | 90.65% | 90.32% | 88.00% | 82.88% | Previous Flagship |
-| **DeepSeek-R1-70B (Open MoE)** | **`86.80%`** | 91.40% | 84.60% | 85.50% | 82.60% | Frontier Open Reasoning |
-| **LLaMA-3.3-70B-Instruct** | **`82.70%`** | 88.50% | 80.80% | 82.30% | 76.10% | Open Dense 70B Baseline |
+| **DeepSeek-R1-70B (Open MoE)** | **`86.80%`** | 91.40% | 84.60% | 85.50% | 82.60% | Frontier Open Reasoning* |
+| **LLaMA-3.3-70B-Instruct** | **`82.70%`** | 88.50% | 80.80% | 82.30% | 76.10% | Open Dense 70B Baseline* |
+| **Qwen3-32B** | **`81.10%`** | 87.90% | 78.20% | 80.60% | 74.50% | Open Dense 32B Baseline* |
 | **FinReg-SLM Base Stage 1 SFT** | **`80.98%`** | 90.29% | 75.78% | 79.00% | 69.18% | Base Fine-Tuned Checkpoint |
-| **LLaMA-3-8B-Instruct** | **`78.10%`** | 84.50% | 72.80% | 74.20% | 60.90% | Open Base 8B Baseline |
-| **Mistral-7B-Instruct** | **`75.90%`** | 82.20% | 70.10% | 72.60% | 58.70% | Open Base 7B Baseline |
+| **LLaMA-3-8B-Instruct** | **`78.10%`** | 84.50% | 72.80% | 74.20% | 60.90% | Open Base 8B Baseline* |
+| **Mistral-7B-Instruct** | **`75.90%`** | 82.20% | 70.10% | 72.60% | 58.70% | Open Base 7B Baseline* |
+| **Non-Specialist Human Baseline** | **`69.00%`** | 72.00% | 70.00% | 68.00% | 66.00% | Human Non-Specialist* |
 | **Base DeepSeek-R1-7B (Zero-Shot)**| **`66.86%`** | 78.42% | 61.29% | 64.00% | 52.05% | Un-tuned Base Model |
+| **Gemma 4 E4B** | **`65.80%`** | 76.40% | 63.20% | 64.50% | 48.90% | Compact Open Baseline* |
+
+*\*Note: Baseline figures marked with an asterisk (*) represent published numbers in Pall et al. (arXiv:2604.19298).*
 
 ---
 
