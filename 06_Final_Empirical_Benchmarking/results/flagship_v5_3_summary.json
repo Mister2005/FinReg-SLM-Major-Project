@@ -1,0 +1,31 @@
+{
+  "version": "flagship_v5_3",
+  "macro_average": 98.23,
+  "total_items": 324,
+  "perfect_count": 319,
+  "total_runtime_minutes": 41.23,
+  "repl_count": 13,
+  "corrections_adopted": 18,
+  "categories": {
+    "regulatory_interpretation": {
+      "count": 139,
+      "accuracy": 98.92,
+      "perfect_count": 137
+    },
+    "contradiction_detection": {
+      "count": 50,
+      "accuracy": 94.0,
+      "perfect_count": 47
+    },
+    "temporal_validity": {
+      "count": 62,
+      "accuracy": 100.0,
+      "perfect_count": 62
+    },
+    "numerical_calculations": {
+      "count": 73,
+      "accuracy": 100.0,
+      "perfect_count": 73
+    }
+  }
+}

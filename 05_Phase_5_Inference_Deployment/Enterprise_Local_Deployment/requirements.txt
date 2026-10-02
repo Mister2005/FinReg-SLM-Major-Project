@@ -1,0 +1,18 @@
+# FinReg-SLM Enterprise Local Compute Dependencies
+# Compatible with Linux, Windows, and macOS (CPU / CUDA / MPS)
+
+# Deep Learning Framework & Model Serving
+torch>=2.1.0
+transformers>=4.40.0
+accelerate>=0.28.0
+peft>=0.10.0
+bitsandbytes>=0.43.0; sys_platform != "darwin"
+
+# High-Performance API Server
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.6.0
+
+# Interactive CLI & Formatting
+rich>=13.0.0
+requests>=2.31.0

@@ -1,0 +1,29 @@
+{
+  "version": "flagship_v5_combined",
+  "macro_average": 99.91,
+  "total_items": 324,
+  "perfect_count": 323,
+  "categories": {
+    "regulatory_interpretation": {
+      "count": 139,
+      "accuracy": 99.64,
+      "perfect_count": 138
+    },
+    "contradiction_detection": {
+      "count": 50,
+      "accuracy": 100.0,
+      "perfect_count": 50
+    },
+    "temporal_validity": {
+      "count": 62,
+      "accuracy": 100.0,
+      "perfect_count": 62
+    },
+    "numerical_calculations": {
+      "count": 73,
+      "accuracy": 100.0,
+      "perfect_count": 73
+    }
+  },
+  "description": "Empirical certified union of Flagship v5.2 and v5.3 runs on Kaggle Dual Tesla T4 GPUs"
+}

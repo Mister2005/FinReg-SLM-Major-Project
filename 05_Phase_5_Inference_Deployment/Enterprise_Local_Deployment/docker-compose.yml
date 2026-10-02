@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  finreg-slm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finreg_slm_enterprise
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - FINREG_BASE_MODEL=deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+      - FINREG_QUANTIZATION=4bit
+      - PORT=8000
+      - HOST=0.0.0.0
+    volumes:
+      # Cache Hugging Face models locally on host to avoid redownloading
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      # Optional local adapter mount
+      - ./adapters:/app/adapters:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

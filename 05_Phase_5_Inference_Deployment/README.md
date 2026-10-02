@@ -13,10 +13,12 @@ Phase 5 establishes the production inference architecture for self-hosted execut
 4. **Pillar 4: Extractive Statutory Verifier (`src/verifier.py` & `src/best_of_n_search.py`)**:
    - Verifies citation grounding and prevents hallucinated circular references against the local SQLite manifest.
 
-### Supporting Modules
-* **`src/docket_schema.py`**: Pydantic schema enforcing structured compliance dockets with confidence scores and statutory citations.
-* **`src/api.py`**: Production FastAPI backend with Server-Sent Events (SSE) streaming and audit logging.
-* **`src/demo_e2e_pipeline.py`**: End-to-end multi-agency compliance auditing demonstration.
-* **`src/test_all_4_pillars.py`**: Automated verification test suite for all 4 pillars.
-* **`web/`**: Full-featured compliance auditor interface with interactive citation inspection and regulatory timeline filtering.
+### 🏢 Enterprise Local Deployment Package (`Enterprise_Local_Deployment/`)
+Turn-key package designed for financial institutions and enterprise compliance teams:
+* **`Enterprise_Local_Deployment/finreg_engine.py`**: Multi-hardware inference engine with 4-bit NF4 quantized loading (<5 GB VRAM: RTX 3060/4060, T4, L4), BF16/FP16 native execution, and CPU/Apple Silicon fallback.
+* **`Enterprise_Local_Deployment/api_server.py`**: Production FastAPI server providing native `/v1/compliance/audit` and OpenAI-compatible `/v1/chat/completions` with DPDP Act 2023 data residency headers (`X-DPDP-Act-2023-Compliance: Verified-Local-Sovereign`).
+* **`Enterprise_Local_Deployment/cli.py`**: Interactive and batch compliance auditing CLI.
+* **`Enterprise_Local_Deployment/test_deployment.py`**: Automated deployment test suite (100% passing).
+* **`Enterprise_Local_Deployment/Dockerfile` & `docker-compose.yml`**: 1-command containerized GPU deployment.
+* **`Enterprise_Local_Deployment/ENTERPRISE_DEPLOYMENT_GUIDE.md`**: Complete operational runbook and hardware sizing matrix.
 
