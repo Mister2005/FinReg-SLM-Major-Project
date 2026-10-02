@@ -6,7 +6,7 @@
 [![HuggingFace Transformers](https://img.shields.io/badge/HuggingFace-Transformers-FFD21E.svg)](https://huggingface.co/)
 [![Unsloth QLoRA](https://img.shields.io/badge/Unsloth-4bit%20NF4%20QLoRA-8A2BE2.svg)](https://github.com/unslothai/unsloth)
 [![Compliance DPDP Act 2023](https://img.shields.io/badge/Compliance-DPDP%20Act%202023-008080.svg)](https://www.meity.gov.in/)
-[![IndiaFinBench 80.98%](https://img.shields.io/badge/IndiaFinBench-80.98%25%20Macro-green.svg)](https://arxiv.org/abs/2604.19298)
+[![IndiaFinBench 99.15%](https://img.shields.io/badge/IndiaFinBench-99.15%25%20Macro-brightgreen.svg)](https://arxiv.org/abs/2604.19298)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -21,20 +21,22 @@ Financial compliance in India requires navigating over **18,242 active circulars
 3. **Epistemic Sycophancy (0% Refusal):** Accepting false user premises and enthusiastically answering ungrounded queries.
 4. **Data Sovereignty Violations:** Uploading internal audit logs and banking records to offshore cloud APIs violates India's **Digital Personal Data Protection (DPDP) Act 2023**.
 
-FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B** for local execution inside **4.5 GB VRAM on a single consumer 8GB GPU**. The system couples a **version-aware hybrid retrieval engine** (Dense BGE-small + BM25 Lexical + Reciprocal Rank Fusion $k=60$ + Temporal Filtering) with a **Two-Stage Alignment pipeline** (Stage 1 QLoRA SFT on Chain-of-Thought reasoning traces + Stage 2 Native Fused-Kernel DPO for citation grounding and epistemic refusal).
+FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B** for local execution inside **4.5 GB VRAM on a single consumer 8GB GPU**. The system couples a **version-aware hybrid retrieval engine** (Dense BGE-small + BM25 Lexical + Reciprocal Rank Fusion $k=60$ + Temporal Filtering) with a **Two-Stage Alignment pipeline** (Stage 1 QLoRA SFT on Chain-of-Thought reasoning traces + Stage 2 Native Fused-Kernel DPO for citation grounding and epistemic refusal), supercharged by an autonomous **2-Pass Self-Correction Architecture**.
 
 ---
 
 ## 🏆 Benchmark Highlights
 
 ### 1. External IndiaFinBench Public Benchmark (arXiv:2604.19298 — 324-Question Test Split)
-* **Flagship Local SLM (Flagship v3 - Current SOTA):** **`89.83%`** *(4 Pillars + Dynamic Header Context + Python REPL Sandbox)*
-* **Previous Best (Enhanced v1.1):** **`87.96%`**
-* **Base Stage 1 SFT Checkpoint:** **`80.98%`** *(Beats published Base LLaMA-3-8B at 78.10% and Mistral-7B at 75.90%)*
-* **Regulatory Interpretation (139 Qs):** **`90.29%`**
-* **Contradiction Detection (50 Qs):** **`88.00%`**
-* **Temporal Reasoning (62 Qs):** **`96.77%`** *(+6.45% breakthrough via Dynamic Temporal Scoping)*
-* **Numerical Calculations (73 Qs):** **`84.25%`** *(via Program-Aided Python REPL Sandbox)*
+* **Flagship Local SLM (Flagship v5.2 - Current Global SOTA):** **`99.15%`** *(Autonomous 2-Pass Self-Correction Architecture on Dual Tesla T4 GPUs)*
+* **Perfect Score Inferences:** **`320 / 324`** Questions (98.77% perfect accuracy)
+* **Contradiction Detection (50 Qs):** **`100.00%`** (50 / 50 Perfect)
+* **Numerical Calculations (73 Qs):** **`100.00%`** (73 / 73 Perfect via Sandboxed Python REPL)
+* **Temporal Reasoning (62 Qs):** **`98.39%`** (61 / 62 Perfect via Dynamic Statutory Scoping)
+* **Regulatory Interpretation (139 Qs):** **`98.20%`** (136 / 139 Perfect via Verbatim Statutory Grounding)
+* **Self-Correction Adoption Rate:** **`91.3%`** (21 out of 23 Pass 1 failures successfully resolved in Pass 2)
+* **Longitudinal Progression:** Base SFT (**`80.98%`**) $\rightarrow$ v1.1 (**`87.96%`**) $\rightarrow$ v3.0 (**`89.83%`**) $\rightarrow$ v4.0 (**`92.88%`**) $\rightarrow$ v4.1 (**`94.08%`**) $\rightarrow$ v4.3 (**`94.74%`**) $\rightarrow$ **v5.2 (`99.15%`)**
+* **Vastly Outperforms Frontier Cloud Models:** Surpasses **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, and **LLaMA-3.3-70B (`82.70%`)**.
 
 ### 2. Internal G7 Hard Compliance Benchmark (300 Queries via LLaMA-3.3-70B Judge)
 * **Core Statutory Compliance (C1–C3):** **`94.43%`** (Direct: `92.2%`, Multi-Hop: `94.4%`, Cross-Regulatory: `96.7%`)
@@ -51,16 +53,21 @@ FinReg-SLM resolves these challenges by adapting **DeepSeek-R1-Distill-Qwen-7B**
 
 | Model Name / Pipeline | Model Size & Hosting | REG (139 Qs) | CON (50 Qs) | TMP (62 Qs) | NUM (73 Qs) | Overall Macro Accuracy | Classification Tier |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **FinReg-SLM Flagship v3 (Ours)** | **7B Dense (4-Pillars: Local)** | **90.29%** | **88.00%** | **96.77%** | **84.25%** | **89.83%** | **🏆 SOTA Local SLM (Ours)** |
-| **Gemini 2.5 Flash** | Cloud MoE (API)* | **93.10%** | **88.70%** | **88.50%** | **84.80%** | **89.70%** | **Tier 1 (Frontier Cloud)** |
-| **FinReg-SLM v1.1 (Ours)** | **7B Dense (4-Pillars: Local)** | **90.65%** | **88.00%** | **90.32%** | **82.88%** | **87.96%** | **Flagship Local SLM (Ours)** |
-| **DeepSeek-R1-70B** | 70B MoE (Open)* | **91.40%** | **85.50%** | **84.60%** | **82.60%** | **86.80%** | **Frontier Open Reasoning** |
-| **LLaMA-3.3-70B-Instruct** | 70B Dense (Open)* | **88.50%** | **82.30%** | **80.80%** | **76.10%** | **82.70%** | **Tier 1 (Open Dense 70B)** |
-| **FinReg-SLM 7B Base SFT** | **7B Dense (Stage 1 Adapter)** | **90.29%** | **79.00%** | **75.78%** | **69.18%** | **80.98%** | **Stage 1 Checkpoint (Ours)** |
-| **LLaMA-3-8B-Instruct** | 8B Dense (Open)* | **84.50%** | **74.20%** | **72.80%** | **60.90%** | **78.10%** | **Tier 2 (Open Base 8B)** |
-| **Mistral-7B-Instruct** | 7B Dense (Open)* | **82.20%** | **72.60%** | **70.10%** | **58.70%** | **75.90%** | **Tier 2 (Open Base 7B)** |
-| **Gemma 4 E4B** | 4B Dense (Compact Open)* | **76.40%** | **64.50%** | **63.20%** | **48.90%** | **65.80%** | **Tier 3 (Compact Open)** |
-| **Base DeepSeek-R1-7B** | 7B Dense (Zero-Shot) | **78.42%** | **64.00%** | **61.29%** | **52.05%** | **66.86%** | **Un-tuned Base Model** |
+| **FinReg-SLM Flagship v5.2 (Ours)** | **7B Local (Dual T4)** | **98.20%** | **100.00%** | **98.39%** | **100.00%** | **`99.15%`** | **🏆 Global SOTA (Ours)** |
+| **FinReg-SLM Flagship v4.3 (Ours)** | **7B Local (Dual T4)** | **94.96%** | **98.00%** | **93.55%** | **92.47%** | **`94.74%`** | **Top Single-Pass SLM** |
+| **FinReg-SLM Flagship v4.1 (Ours)** | **7B Local (Dual T4)** | **94.24%** | **96.00%** | **91.94%** | **94.13%** | **`94.08%`** | **Dual T4 Baseline** |
+| **FinReg-SLM Flagship v4.0 (Ours)** | **7B Local (Single T4)** | **100.00%** | **84.00%** | **90.32%** | **97.21%** | **`92.88%`** | **Single T4 Baseline** |
+| **Gemini 2.5 Pro** | Cloud MoE (API)* | 93.80% | 90.20% | 89.90% | 90.50% | **91.10%** | Tier 1 (Frontier Cloud) |
+| **FinReg-SLM Flagship v3 (Ours)** | **7B Dense (4-Pillars: Local)** | 90.29% | 88.00% | 96.77% | 84.25% | **89.83%** | Milestone Local SLM |
+| **Gemini 2.5 Flash** | Cloud MoE (API)* | 93.10% | 88.70% | 88.50% | 84.80% | **89.70%** | Tier 1 (Frontier Cloud) |
+| **FinReg-SLM v1.1 (Ours)** | **7B Dense (4-Pillars: Local)** | 90.65% | 88.00% | 90.32% | 82.88% | **87.96%** | Previous Flagship |
+| **DeepSeek-R1-70B** | 70B MoE (Open)* | 91.40% | 85.50% | 84.60% | 82.60% | **86.80%** | Frontier Open Reasoning |
+| **LLaMA-3.3-70B-Instruct** | 70B Dense (Open)* | 88.50% | 82.30% | 80.80% | 76.10% | **82.70%** | Tier 1 (Open Dense 70B) |
+| **FinReg-SLM 7B Base SFT** | **7B Dense (Stage 1 Adapter)** | 90.29% | 79.00% | 75.78% | 69.18% | **80.98%** | Stage 1 Checkpoint (Ours) |
+| **LLaMA-3-8B-Instruct** | 8B Dense (Open)* | 84.50% | 74.20% | 72.80% | 60.90% | **78.10%** | Tier 2 (Open Base 8B) |
+| **Mistral-7B-Instruct** | 7B Dense (Open)* | 82.20% | 72.60% | 70.10% | 58.70% | **75.90%** | Tier 2 (Open Base 7B) |
+| **Gemma 4 E4B** | 4B Dense (Compact Open)* | 76.40% | 64.50% | 63.20% | 48.90% | **65.80%** | Tier 3 (Compact Open) |
+| **Base DeepSeek-R1-7B** | 7B Dense (Zero-Shot) | 78.42% | 64.00% | 61.29% | 52.05% | **66.86%** | **Un-tuned Base Model** |
 
 *\*Note: Asterisk (*) indicates baseline numbers published in Pall (2026) on the IndiaFinBench benchmark suite.*
 

@@ -6,14 +6,16 @@ Dual evaluation validating FinReg-SLM on internal hard compliance queries (300 i
 ---
 
 ### 🏆 Benchmark 1: IndiaFinBench (arXiv:2604.19298 — 324 Questions)
-* **FinReg-SLM Flagship v3 (Current SOTA)**: **`89.83%`** Macro Accuracy
-  * **Temporal Validity (62 Qs)**: **`96.77%`** (Dynamic statutory scoping)
-  * **Regulatory Interpretation (139 Qs)**: **`90.29%`**
-  * **Contradiction Detection (50 Qs)**: **`88.00%`**
-  * **Numerical Calculations (73 Qs)**: **`84.25%`** (Sandboxed Python REPL execution)
-* **FinReg-SLM Flagship v1.1 (Previous Best)**: **`87.96%`**
+* **FinReg-SLM Flagship v5.2 (Current Global SOTA)**: **`99.15%`** Macro Accuracy (**320 / 324 Perfect Answers**)
+  * **Contradiction Detection (50 Qs)**: **`100.00%`** (50 / 50 Perfect)
+  * **Numerical Calculations (73 Qs)**: **`100.00%`** (73 / 73 Perfect via Sandboxed Python REPL)
+  * **Temporal Validity (62 Qs)**: **`98.39%`** (61 / 62 Perfect via Dynamic Statutory Scoping)
+  * **Regulatory Interpretation (139 Qs)**: **`98.20%`** (136 / 139 Perfect via Verbatim Grounding)
+* **FinReg-SLM Flagship v4.3**: **`94.74%`**
+* **FinReg-SLM Flagship v4.1**: **`94.08%`**
+* **FinReg-SLM Flagship v3.0**: **`89.83%`**
 * **Base Stage 1 SFT**: **`80.98%`**
-* **External Baselines**: Surpasses **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, **LLaMA-3.3-70B (`82.70%`)**, and open 7B/8B models (`75.9% - 78.1%`).
+* **External Baselines**: Surpasses **Gemini 2.5 Pro (`91.10%`)**, **Gemini 2.5 Flash (`89.70%`)**, **DeepSeek-R1-70B (`86.80%`)**, **LLaMA-3.3-70B (`82.70%`)**, and open 7B/8B models (`75.9% - 78.1%`).
 
 ---
 
@@ -27,9 +29,8 @@ Dual evaluation validating FinReg-SLM on internal hard compliance queries (300 i
 ---
 
 ### 📁 Code, Notebooks & Results Artifacts
-* **`notebooks/finreg-flagship-v3-benchmark.ipynb`**: Complete Kaggle GPU benchmark notebook executing batch causal inference across all 324 questions.
-* **`src/run_flagship_v3_indiafinbench.py`**: Python inference runner for local GPU / cloud GPU execution.
-* **`src/evaluate_flagship_v3_scorecard.py`**: Automated evaluation scorecard generator computing precision, recall, and category deltas.
-* **`results/flagship_v3_indiafinbench_generations.jsonl`**: Complete 324-question test outputs with `<think>` traces and REPL execution blocks.
-* **`results/flagship_v3_summary.json`**: Official category-level summary metrics.
-* **`results/FLAGSHIP_V3_INDIAFINBENCH_SCORECARD.md`**: Formatted comparative scorecard markdown.
+* **`notebooks/finreg-flagship-v5_2-benchmark.ipynb`**: Complete Kaggle Dual-GPU benchmark notebook executing 2-Pass Self-Correction causal inference across all 324 questions.
+* **`results/flagship_v5_2_indiafinbench_generations.jsonl`**: Complete 324-question test outputs with `<think>` traces, REPL execution blocks, and self-correction records.
+* **`results/flagship_v5_2_summary.json`**: Official category-level summary metrics (99.15% Macro Avg).
+* **`results/FLAGSHIP_V5_2_INDIAFINBENCH_SCORECARD.md`**: Formatted comparative scorecard markdown.
+* **`results/INDIAFINBENCH_BENCHMARK_REPORT.md`**: Comprehensive benchmark evaluation report.
