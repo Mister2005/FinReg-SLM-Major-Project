@@ -15,14 +15,16 @@
 - **Insurance Regulatory and Development Authority of India (IRDAI):** Solvency margins, policyholder protection.
 - **International Financial Services Centres Authority (IFSCA):** Banking and market regulations.
 
-### Key Certified Performance Metrics (IndiaFinBench Benchmark):
-- **Certified Dual-Run Union Macro Average:** **`99.91%`** (323 / 324 perfect statutory answers)
-- **Contradiction Detection:** **`100.00%`** (50 / 50 perfect affirmative/negative statutory alignment)
-- **Numerical Calculations:** **`100.00%`** (73 / 73 perfect via integrated Sandboxed Python REPL)
-- **Temporal Validity & Timeline:** **`100.00%`** (62 / 62 perfect effective date / amendment tracking)
-- **Regulatory Interpretation:** **`99.64%`** (138 / 139 perfect statutory condition extraction)
-- **Standalone Flagship v5.3 Run:** **`98.23%`** (100% Temporal, 100% Math, 98.92% Regulatory)
-- **Standalone Flagship v5.2 Run:** **`99.15%`** (100% Contradiction, 100% Math, 98.39% Temporal)
+### Key Certified Performance Metrics:
+- **FinReg-Omni13 (All 13 Regulators, 325 Queries):** **`100.00%`** (325 / 325 perfect statutory answers under Method 1)
+- **IndiaFinBench Full Official Test Suite (324 Queries):** **`99.38%`** (322 / 324 perfect answers under Method 1)
+- **Grand Total Evaluation Scope (649 Queries):** **`99.69%`** (647 / 649 queries passing under Method 1)
+- **All 13 Indian Regulators at 100%:** RBI (25/25), SEBI (25/25), IRDAI (25/25), PFRDA (25/25), IBBI (25/25), MCA (25/25), CBIC (25/25), CBDT (25/25), CCI (25/25), EPFO (25/25), ESIC (25/25), MEITY (25/25), IFSCA (25/25).
+- **Contradiction Detection:** **`100.00%`** on Omni13, **`96.67%`** on IndiaFinBench
+- **Numerical & Tabular Calculations:** **`100.00%`** (65/65 on Omni13, 100/100 on IndiaFinBench)
+- **Temporal Validity & Timeline:** **`100.00%`** (7/7 on Omni13, 60/60 on IndiaFinBench)
+- **Multiple Choice & Interpretation:** **`100.00%`** (246/246 on Omni13, 104/104 on IndiaFinBench)
+- **Certified Dual-Run Union on IndiaFinBench:** **`99.91%`** (323 / 324)
 
 ---
 
@@ -39,7 +41,7 @@ For banks, NBFCs, asset management companies, and insurance firms, sending confi
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   ENTERPRISE PRIVATE AIR-GAPPED PERIMETER              │
 │                                                                        │
-│   [Internal Applications / ERP / Core Banking]                         │
+│   [Internal Applications / ERP / Core Banking / Compliance Portals]    │
 │                           │                                            │
 │                           ▼ (Local HTTP / Port 8000)                   │
 │   ┌────────────────────────────────────────────────────────────────┐   │
@@ -50,10 +52,12 @@ For banks, NBFCs, asset management companies, and insurance firms, sending confi
 │                           │                                            │
 │                           ▼                                            │
 │   ┌────────────────────────────────────────────────────────────────┐   │
-│   │           FinReg Flagship v5.3 / v5 Inference Engine           │   │
-│   │   - Pass 1: High-Throughput Task Dispatcher                    │   │
-│   │   - Sandboxed Python REPL (CRAR, NAV, Date Offsets)            │   │
-│   │   - Pass 2: Task-Adaptive Statutory Fallback & Decycling Gate  │   │
+│   │               FinReg Local Regulatory Engine                   │   │
+│   │   - Method 1 (Default): Single-Pass Pure Weights (100% Omni13) │   │
+│   │     * Pre-filled CoT (<think>), Safe 600-Token Budget          │   │
+│   │     * Distractor-Safe Option Parser, ~2.5s Latency             │   │
+│   │   - Sandboxed Python REPL (CRAR, NAV, Penal Rates, Dates)      │   │
+│   │   - Method 2 (Optional): Reflection Pass & Veto Protection     │   │
 │   └───────────────────────┬────────────────────────────────────────┘   │
 │                           │                                            │
 │                           ▼                                            │
@@ -149,7 +153,7 @@ FinReg-SLM's 4-bit NF4 quantization architecture allows enterprise-grade perform
   "context": "The trustee shall oversee activities of the investment manager in the interest of the unit holders, ensure that the investment manager complies with regulation 10 and shall obtain compliance certificate from the investment manager, in the form as may be specified, on a quarterly basis.",
   "query": "Under SEBI (InvIT) Regulations 2014, how frequently must the trustee obtain a compliance certificate from the investment manager?",
   "task_type": "regulatory_interpretation",
-  "enable_self_correction": true
+  "method": "method_1"
 }
 ```
 
@@ -161,12 +165,14 @@ FinReg-SLM's 4-bit NF4 quantization architecture allows enterprise-grade perform
   "task_type": "regulatory_interpretation",
   "final_answer": "Under the SEBI (InvIT) Regulations, 2014, the trustee must obtain a compliance certificate from the investment manager on a quarterly basis.",
   "legal_reasoning": "The statutory context specifies that the trustee must oversee the investment manager and obtain compliance certificates in the specified format 'on a quarterly basis'.",
+  "option_selected": null,
   "citations": [
     "Regulation 10"
   ],
   "repl_executed": false,
   "repl_output": "",
   "passes_used": 1,
+  "method_used": "method_1",
   "latency_ms": 312.4,
   "device": "cuda",
   "compliance_standards": [

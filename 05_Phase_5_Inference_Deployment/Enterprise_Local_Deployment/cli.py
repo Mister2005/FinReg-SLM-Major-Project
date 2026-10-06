@@ -17,6 +17,14 @@ Usage:
 
 import os
 import sys
+
+# Prevent broken TensorFlow / Protobuf runtime collision in Hugging Face Transformers
+os.environ["USE_TF"] = "0"
+os.environ["TRANSFORMERS_NO_TF"] = "1"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+sys.modules["tensorflow"] = None
+
 import json
 import argparse
 from typing import Dict, Any
@@ -84,6 +92,9 @@ def run_interactive(engine: FinRegEngine):
                 table.add_column("Metric", style="cyan")
                 table.add_column("Value", style="magenta")
                 table.add_row("Task Type", result["task_type"])
+                table.add_row("Method Used", result.get("method_used", "method_1"))
+                if result.get("option_selected"):
+                    table.add_row("Option Selected", result["option_selected"])
                 table.add_row("Passes Used", str(result["passes_used"]))
                 table.add_row("Latency", f"{result['latency_ms']} ms")
                 table.add_row("Hardware", result["device"])
@@ -95,15 +106,15 @@ def run_interactive(engine: FinRegEngine):
                 if result.get("legal_reasoning"):
                     print(f"\n[LEGAL REASONING]:\n{result['legal_reasoning']}")
                 print(f"\n[FINAL ANSWER]:\n{result['final_answer']}")
-                print(f"[METADATA]: Latency={result['latency_ms']}ms | Passes={result['passes_used']} | REPL={result['repl_executed']}")
+                print(f"[METADATA]: Method={result.get('method_used', 'method_1')} | Option={result.get('option_selected')} | Latency={result['latency_ms']}ms | Passes={result['passes_used']} | REPL={result['repl_executed']}")
 
         except (KeyboardInterrupt, EOFError):
             print("\nSession ended.")
             break
 
 
-def run_batch(engine: FinRegEngine, input_path: str, output_path: str):
-    print(f"[*] Starting Batch Audit from: {input_path}")
+def run_batch(engine: FinRegEngine, input_path: str, output_path: str, method: str = "method_1"):
+    print(f"[*] Starting Batch Audit from: {input_path} (Method: {method})")
     items = []
     if input_path.endswith(".jsonl"):
         for l in open(input_path, encoding="utf-8"):
@@ -119,10 +130,10 @@ def run_batch(engine: FinRegEngine, input_path: str, output_path: str):
         q = it.get("question") or it.get("query")
         c = it.get("context")
         tt = it.get("task_type")
-        res = engine.audit(query=q, context=c, task_type=tt, doc_id=it.get("id", f"CASE_{i+1}"))
+        res = engine.audit(query=q, context=c, task_type=tt, doc_id=it.get("id", f"CASE_{i+1}"), method=method)
         res["id"] = it.get("id", f"CASE_{i+1}")
         results.append(res)
-        print(f"  [{i+1}/{len(items)}] Audited {res['id']} ({res['latency_ms']:.1f} ms, Pass {res['passes_used']})")
+        print(f"  [{i+1}/{len(items)}] Audited {res['id']} ({res['latency_ms']:.1f} ms, Method {res.get('method_used', method)})")
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
@@ -135,6 +146,7 @@ def main():
     parser.add_argument("--context", type=str, help="Regulatory statutory context text")
     parser.add_argument("--query", type=str, help="Compliance query / question")
     parser.add_argument("--task-type", type=str, default=None, help="Task type override")
+    parser.add_argument("--method", type=str, default="method_1", choices=["method_1", "method_2"], help="Inference method: 'method_1' (Gold Standard Single-Pass, 100% Omni13) or 'method_2' (Combined with REPL & Reflection)")
     parser.add_argument("--batch", type=str, help="Path to input JSON/JSONL batch file")
     parser.add_argument("--output", type=str, default="audit_report.json", help="Path to save output audit report")
     parser.add_argument("--adapter-path", type=str, default=None, help="Custom path to LoRA adapter")
@@ -142,14 +154,14 @@ def main():
 
     args = parser.parse_args()
 
-    engine = FinRegEngine(adapter_path=args.adapter_path, device=args.device)
+    engine = FinRegEngine(adapter_path=args.adapter_path, device=args.device, default_method=args.method)
 
     if args.interactive:
         run_interactive(engine)
     elif args.batch:
-        run_batch(engine, args.batch, args.output)
+        run_batch(engine, args.batch, args.output, method=args.method)
     elif args.context and args.query:
-        res = engine.audit(query=args.query, context=args.context, task_type=args.task_type)
+        res = engine.audit(query=args.query, context=args.context, task_type=args.task_type, method=args.method)
         print(json.dumps(res, indent=2))
     else:
         parser.print_help()

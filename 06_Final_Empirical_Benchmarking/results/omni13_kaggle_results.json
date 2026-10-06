@@ -1,0 +1,82 @@
+{
+  "grand_total_queries": 649,
+  "benchmark_omni13": {
+    "name": "FinReg-Omni13 (All 13 Indian Regulators)",
+    "total_questions": 325,
+    "method_1_single_pass_acc": 100.0,
+    "method_2_combined_pipeline_acc": 99.38,
+    "per_regulator_counts": {
+      "RBI": 25,
+      "SEBI": 25,
+      "IRDAI": 25,
+      "PFRDA": 25,
+      "IBBI": 25,
+      "MCA": 25,
+      "CBIC": 25,
+      "CBDT": 25,
+      "CCI": 25,
+      "EPFO": 25,
+      "ESIC": 25,
+      "MEITY": 25,
+      "IFSCA": 25
+    },
+    "per_regulator_m1": {
+      "RBI": 25.0,
+      "SEBI": 25.0,
+      "IRDAI": 25.0,
+      "PFRDA": 25.0,
+      "IBBI": 25.0,
+      "MCA": 25.0,
+      "CBIC": 25.0,
+      "CBDT": 25.0,
+      "CCI": 25.0,
+      "EPFO": 25.0,
+      "ESIC": 25.0,
+      "MEITY": 25.0,
+      "IFSCA": 25.0
+    },
+    "per_regulator_m2": {
+      "RBI": 25.0,
+      "SEBI": 25.0,
+      "IRDAI": 25.0,
+      "PFRDA": 25.0,
+      "IBBI": 24.0,
+      "MCA": 25.0,
+      "CBIC": 25.0,
+      "CBDT": 25.0,
+      "CCI": 25.0,
+      "EPFO": 25.0,
+      "ESIC": 25.0,
+      "MEITY": 25.0,
+      "IFSCA": 24.0
+    },
+    "per_category_counts": {
+      "multiple_choice": 246,
+      "contradiction_detection": 7,
+      "temporal_validity": 7,
+      "numerical_calculations": 65
+    },
+    "per_category_m1": {
+      "multiple_choice": 246.0,
+      "contradiction_detection": 7.0,
+      "temporal_validity": 7.0,
+      "numerical_calculations": 65.0
+    },
+    "per_category_m2": {
+      "multiple_choice": 246.0,
+      "contradiction_detection": 7.0,
+      "temporal_validity": 7.0,
+      "numerical_calculations": 63.0
+    },
+    "winning_method": "Single Pass (Method 1)"
+  },
+  "benchmark_indiafinbench": {
+    "name": "IndiaFinBench (Full Official Suite)",
+    "total_questions": 324,
+    "method_1_single_pass_acc": 99.38,
+    "method_2_combined_pipeline_acc": 99.38,
+    "winning_method": "Combined Pipeline (Method 2)"
+  },
+  "overall_recommended_pipeline": "Method 2 (Combined Pipeline: Model + Python REPL + 2-Pass Reflection with Conservative Reflection Veto)",
+  "evaluation_timestamp": "2026-10-06 19:20:29 UTC"
+}

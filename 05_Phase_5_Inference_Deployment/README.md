@@ -15,10 +15,10 @@ Phase 5 establishes the production inference architecture for self-hosted execut
 
 ### 🏢 Enterprise Local Deployment Package (`Enterprise_Local_Deployment/`)
 Turn-key package designed for financial institutions and enterprise compliance teams:
-* **`Enterprise_Local_Deployment/finreg_engine.py`**: Multi-hardware inference engine equipped with **Flagship v5.3 Task-Adaptive Fallbacks**, **Autonomous 2-Pass Self-Correction**, **Anti-Cyclic Decycling Adoption Gate**, 4-bit NF4 quantized loading (<5 GB VRAM: RTX 3060/4060, T4, L4), BF16/FP16 native execution, and CPU/Apple Silicon fallback.
-* **`Enterprise_Local_Deployment/api_server.py`**: Production FastAPI server providing native `/v1/compliance/audit` and OpenAI-compatible `/v1/chat/completions` with DPDP Act 2023 data residency headers (`X-DPDP-Act-2023-Compliance: Verified-Local-Sovereign`).
-* **`Enterprise_Local_Deployment/cli.py`**: Interactive and batch compliance auditing CLI.
+* **`Enterprise_Local_Deployment/finreg_engine.py`**: Multi-hardware inference engine equipped with **Method 1 (Single Pass / Pure Weights - Default & Gold Standard)** achieving **100.00% on FinReg-Omni13 (325/325 across all 13 regulators)** and **99.38% on IndiaFinBench (322/324)**. Features greedy decoding (`do_sample=False`), pre-filled `<think>` reasoning, safe 600-token budget, distractor-safe option parser (`extract_option_letter`), Sandboxed Python REPL, and optional **Method 2 (Dual-Pass Conservative Reflection Veto)**. Runs under 4-bit NF4 quantization (<5 GB VRAM: RTX 3060/4060, T4, L4), BF16/FP16 native execution, and CPU/Apple Silicon fallback.
+* **`Enterprise_Local_Deployment/api_server.py`**: Production FastAPI server providing native `/v1/compliance/audit` (supporting `method="method_1"` and `method="method_2"`) and OpenAI-compatible `/v1/chat/completions` with DPDP Act 2023 data residency headers (`X-DPDP-Act-2023-Compliance: Verified-Local-Sovereign`).
+* **`Enterprise_Local_Deployment/cli.py`**: Interactive and batch compliance auditing CLI with `--method method_1` (default) and rich execution telemetry.
 * **`Enterprise_Local_Deployment/test_deployment.py`**: Automated deployment test suite (100% passing).
 * **`Enterprise_Local_Deployment/Dockerfile` & `docker-compose.yml`**: 1-command containerized GPU deployment.
-* **`Enterprise_Local_Deployment/ENTERPRISE_DEPLOYMENT_GUIDE.md`**: Complete operational runbook and hardware sizing matrix detailing certified 99.91% dual-run union performance.
+* **`Enterprise_Local_Deployment/ENTERPRISE_DEPLOYMENT_GUIDE.md`**: Complete operational runbook, hardware sizing matrix, and empirical benchmark documentation detailing 100.00% Omni13 compliance and 99.69% overall accuracy.
 

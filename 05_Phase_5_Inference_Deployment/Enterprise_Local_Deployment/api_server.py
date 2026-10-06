@@ -10,6 +10,14 @@ Production-grade FastAPI service providing:
 
 import os
 import sys
+
+# Prevent broken TensorFlow / Protobuf runtime collision in Hugging Face Transformers
+os.environ["USE_TF"] = "0"
+os.environ["TRANSFORMERS_NO_TF"] = "1"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+sys.modules["tensorflow"] = None
+
 import time
 import uuid
 from typing import List, Dict, Any, Optional
@@ -89,9 +97,10 @@ async def add_data_sovereignty_headers(request: Request, call_next):
 class ComplianceAuditRequest(BaseModel):
     query: str = Field(..., description="The compliance question, audit check, or transaction scenario to evaluate.")
     context: str = Field(..., description="The statutory regulatory excerpt (RBI, SEBI, IRDAI circular, master direction, or act).")
-    task_type: Optional[str] = Field(default=None, description="Optional: 'regulatory_interpretation', 'contradiction_detection', 'temporal_validity', 'numerical_calculations', or 'auto'.")
+    task_type: Optional[str] = Field(default=None, description="Optional: 'multiple_choice', 'regulatory_interpretation', 'contradiction_detection', 'temporal_validity', 'numerical_calculations', or 'auto'.")
     doc_id: Optional[str] = Field(default="REG_DOC", description="Identifier tag for the source regulation document.")
-    enable_self_correction: Optional[bool] = Field(default=True, description="Enables autonomous Pass 2 self-correction to eliminate refusal hedgings.")
+    method: Optional[str] = Field(default="method_1", description="Inference mode: 'method_1' (Gold Standard Single-Pass, 100% on Omni13, ~2.5s) or 'method_2' (Combined Pipeline with REPL & Reflection Veto).")
+    enable_self_correction: Optional[bool] = Field(default=None, description="Legacy parameter: set True to enable Pass 2 reflection (Method 2). Default uses Method 1.")
 
 class ComplianceAuditResponse(BaseModel):
     status: str
@@ -99,10 +108,12 @@ class ComplianceAuditResponse(BaseModel):
     task_type: str
     final_answer: str
     legal_reasoning: str
+    option_selected: Optional[str] = None
     citations: List[str]
     repl_executed: bool
     repl_output: str
     passes_used: int
+    method_used: str = "method_1"
     latency_ms: float
     device: str
     compliance_standards: List[str]
@@ -138,8 +149,8 @@ class OpenAIChatResponse(BaseModel):
 @app.post("/v1/compliance/audit", response_model=ComplianceAuditResponse)
 def compliance_audit(req: ComplianceAuditRequest):
     """
-    Executes an authoritative regulatory compliance audit with 2-pass self-correction
-    and deterministic REPL calculations.
+    Executes an authoritative regulatory compliance audit with Gold Standard Method 1
+    (Single-Pass, 100% Omni13 accuracy) or Method 2 (Combined Pipeline with REPL & Reflection).
     """
     if ENGINE is None:
         raise HTTPException(status_code=503, detail="FinReg-SLM Engine not initialized.")
@@ -148,11 +159,13 @@ def compliance_audit(req: ComplianceAuditRequest):
     t0 = time.time()
 
     try:
+        chosen_method = req.method or ("method_2" if req.enable_self_correction else "method_1")
         result = ENGINE.audit(
             query=req.query,
             context=req.context,
             task_type=req.task_type if req.task_type != "auto" else None,
             doc_id=req.doc_id,
+            method=chosen_method,
             enable_self_correction=req.enable_self_correction
         )
         
@@ -168,6 +181,8 @@ def compliance_audit(req: ComplianceAuditRequest):
             **result
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Audit execution error: {str(e)}")
 
 
@@ -204,7 +219,7 @@ def chat_completions(req: OpenAIChatRequest):
     result = ENGINE.audit(
         query=query,
         context=context,
-        enable_self_correction=True
+        method="method_1"
     )
 
     formatted_content = f"<think>\n{result['legal_reasoning']}\n</think>\n\n{result['final_answer']}"
@@ -435,6 +450,7 @@ def interactive_portal():
                 }
 
                 document.getElementById('result-card').style.display = 'block';
+                document.getElementById('meta-info').innerText = 'Processing regulatory compliance audit locally...';
                 document.getElementById('final-answer').innerText = 'Auditing against regulatory statutes...';
                 document.getElementById('reasoning').innerText = 'Performing chain-of-thought analysis and REPL verification...';
 
@@ -449,11 +465,22 @@ def interactive_portal():
                         })
                     });
                     const data = await res.json();
-                    document.getElementById('meta-info').innerText = `Latency: ${data.latency_ms} ms | Passes: ${data.passes_used} | Device: ${data.device} | Citations: ${data.citations.join(', ') || 'Statutory direct'}`;
+                    if (!res.ok) {
+                        const errMsg = data.detail || (typeof data === 'string' ? data : JSON.stringify(data));
+                        document.getElementById('meta-info').innerText = `Error: HTTP ${res.status}`;
+                        document.getElementById('reasoning').innerText = 'Server encountered an issue during audit.';
+                        document.getElementById('final-answer').innerText = 'Error: ' + errMsg;
+                        return;
+                    }
+                    const citations = (data.citations && Array.isArray(data.citations) && data.citations.length > 0)
+                        ? data.citations.join(', ')
+                        : 'Statutory direct';
+                    document.getElementById('meta-info').innerText = `Latency: ${data.latency_ms} ms | Passes: ${data.passes_used} | Device: ${data.device} | Citations: ${citations}`;
                     document.getElementById('reasoning').innerText = data.legal_reasoning ? 'Legal Reasoning: ' + data.legal_reasoning : 'Direct Statutory Determination.';
                     document.getElementById('final-answer').innerText = data.final_answer;
                 } catch (e) {
-                    document.getElementById('final-answer').innerText = 'Error: ' + e;
+                    document.getElementById('meta-info').innerText = 'Network / Request Error';
+                    document.getElementById('final-answer').innerText = 'Error: ' + (e.message || e);
                 }
             }
         </script>

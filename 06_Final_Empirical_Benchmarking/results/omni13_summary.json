@@ -1,0 +1,14 @@
+{
+  "benchmark": "FinReg-Omni13",
+  "total_cases": 65,
+  "single_pass": {
+    "accuracy": 91.54,
+    "refusal_rate": 0.0,
+    "avg_latency_ms": 10549.19
+  },
+  "combined_pipeline": {
+    "accuracy": 91.54,
+    "refusal_rate": 0.0,
+    "avg_latency_ms": 10903.25
+  }
+}

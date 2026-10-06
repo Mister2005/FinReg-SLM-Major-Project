@@ -5,8 +5,16 @@ Validates local compute execution, deterministic REPL mathematics,
 regulatory interpretation, and API endpoint readiness.
 """
 
-import sys
 import os
+import sys
+
+# Prevent broken TensorFlow / Protobuf runtime collision in Hugging Face Transformers
+os.environ["USE_TF"] = "0"
+os.environ["TRANSFORMERS_NO_TF"] = "1"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+sys.modules["tensorflow"] = None
+
 import unittest
 import datetime
 
